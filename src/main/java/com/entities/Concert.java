@@ -1,12 +1,12 @@
 package com.entities;
 
 import java.util.*;
-import javax.persistence.*;;
+import javax.persistence.*;
+import java.util.ArrayList;
 import lombok.Data;
 
 @Entity
 @Data
-
 public class Concert {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,8 +14,6 @@ public class Concert {
     private Date date_debut;
     private Date date_fin;
     private double prix;
-    @OneToOne
-    private Salle salle;
-    private List<Integer> participant;
+    private ArrayList<Integer> participant;
 
 }

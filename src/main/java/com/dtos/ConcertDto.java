@@ -5,7 +5,7 @@ package com.dtos;
 
 import lombok.Data;
 import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
 @Data
 public class ConcertDto {
 
@@ -13,7 +13,6 @@ public class ConcertDto {
     private Date date_debut;
     private Date date_fin;
     private double prix;
-    private Long salleId;
-    private  List<Integer> paricipant;
+    private ArrayList<Integer> paricipant;
 
 }

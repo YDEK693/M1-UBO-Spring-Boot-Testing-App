@@ -18,7 +18,7 @@ public class SalleController {
 
     /**
      * <p>Get all dogs in the system</p>
-     * @return List<DogDto>
+     * @return List<SalleDto>
      */
     @GetMapping
     public List<SalleDto> getSalles() {

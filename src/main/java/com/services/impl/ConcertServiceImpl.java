@@ -64,8 +64,12 @@ public class ConcertServiceImpl implements ConcertService {
         concertDto.setDate_debut(concert.getDate_debut());
         concertDto.setDate_fin(concert.getDate_fin());
         concertDto.setPrix(concert.getPrix());
-        concertDto.setSalleId(concert.getSalle().getId());
-        //ajouter boucle pour liste participant
+       /*
+        concertDto.setParicipant(new ArrayList<Integer>());
+        for (Integer participant: concert.getParticipant()) {
+            concertDto.getParicipant().add(participant);
+        }*/
+
         return concertDto;
     }
 
@@ -78,8 +82,11 @@ public class ConcertServiceImpl implements ConcertService {
         concert.setDate_debut(concertDto.getDate_debut());
         concert.setDate_fin(concertDto.getDate_fin());
         concert.setPrix(concertDto.getPrix());
-        concert.setSalle(this.salleRepository.getById(concertDto.getSalleId()));
-        //ajouter boucle pour liste participant
+        /*ajouter boucle pour liste participant
+        concert.setParticipant(new ArrayList<Integer>());
+        for (Integer groupeId: concertDto.getParicipant()) {
+            concert.getParticipant().add(groupeId);
+        }*/
         return concert;
     }
 }
