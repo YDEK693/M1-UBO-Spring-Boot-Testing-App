@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
 @Service("dogService")
 public class DogServiceImpl implements DogService {
 
@@ -70,6 +69,7 @@ public class DogServiceImpl implements DogService {
         dog.setName(dogDto.getName());
         dog.setId(dogDto.getId());
         dog.setRace(dogDto.getRace());
+
         return dog;
     }
 }
