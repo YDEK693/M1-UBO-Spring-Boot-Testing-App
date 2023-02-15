@@ -4,8 +4,8 @@ package com.services.impl;
 
 import com.dtos.ConcertDto;
 import com.entities.Concert;
-import com.entities.Dog;
 import com.repositories.ConcertRepository;
+import com.repositories.SalleRepository;
 import com.services.ConcertService;
 import org.springframework.stereotype.Service;
 
@@ -16,32 +16,30 @@ import java.util.List;
 @Service("ConcertService")
 public class ConcertServiceImpl implements ConcertService {
     private final ConcertRepository concertRepository;
+    private final SalleRepository salleRepository;
 
-    public ConcertServiceImpl(ConcertRepository concertRepository){
+    public ConcertServiceImpl(ConcertRepository concertRepository, SalleRepository salleRepository){
         this.concertRepository = concertRepository;
+        this.salleRepository = salleRepository;
     }
 
     @Override
     public List<ConcertDto> getAllConcerts() {
-        List<ConcertDto> ConcertDtos = new ArrayList<>();
-      /*  List<Concert> Concerts = ConcertRepository.findAll();
-        Concerts.forEach(dog -> {
-            ConcertDtos.add(ConcertEntityToDto(dog));
+        List<ConcertDto> concertDtos = new ArrayList<>();
+        List<Concert> concerts = concertRepository.findAll();
+        concerts.forEach(concert -> {
+            concertDtos.add(concertEntityToDto(concert));
         });
-        */
-
-        return ConcertDtos;
-
+        return concertDtos;
     }
 
     @Override
     public ConcertDto saveConcert(ConcertDto ConcertDto) {
        // Converts the dto to the concert entity
         Concert Concert = ConcertDtoToEntity(ConcertDto);
-        /* Save the concert entity
-        Concert = ConcertRepository.save(Concert);
+        // Save the concert entity
+        Concert = concertRepository.save(Concert);
         // Return the new dto
-        */
         return concertEntityToDto(Concert);
     }
 
@@ -60,24 +58,28 @@ public class ConcertServiceImpl implements ConcertService {
     /**
      * Map Concert dto to Concert entity
      */
-    private ConcertDto concertEntityToDto(Concert Concert){
-        ConcertDto ConcertDto = new ConcertDto();
-       /* ConcertDto.setPrix(Concert.getPrix()rix());
-        ConcertDto.setNom(Concert.getNom());
-        ConcertDto.setCapacite(Concert.getCapacite());*/
-        return ConcertDto;
+    private ConcertDto concertEntityToDto(Concert concert){
+        ConcertDto concertDto = new ConcertDto();
+        concertDto.setId(concert.getId());
+        concertDto.setDate_debut(concert.getDate_debut());
+        concertDto.setDate_fin(concert.getDate_fin());
+        concertDto.setPrix(concert.getPrix());
+        concertDto.setSalleId(concert.getSalle().getId());
+        //ajouter boucle pour liste participant
+        return concertDto;
     }
 
     /**
      * Map Concert entity to Concert dto
      */
-    private Concert ConcertDtoToEntity(ConcertDto ConcertDto){
-        Concert Concert = new Concert();
-       /* Concert.setId(ConcertDto.getId);
-        Concert.setSalle();
-        Concert.setDate_debut(ConcertDto.getCapacite());
-        Concert.setDate_debut(ConcertDto.getCapacite());
-        Concert.setPrix(ConcertDto.getNom());*/
-        return Concert;
+    private Concert ConcertDtoToEntity(ConcertDto concertDto){
+        Concert concert = new Concert();
+        concert.setId(concertDto.getId());
+        concert.setDate_debut(concertDto.getDate_debut());
+        concert.setDate_fin(concertDto.getDate_fin());
+        concert.setPrix(concertDto.getPrix());
+        concert.setSalle(this.salleRepository.getById(concertDto.getSalleId()));
+        //ajouter boucle pour liste participant
+        return concert;
     }
 }
