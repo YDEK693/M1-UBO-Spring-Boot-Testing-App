@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<main id="app">
+  <form @submit.prevent="submitForm">
+    <div>
+      <label for="nbBillet">Nb billet:</label><br>
+      <input id="nbBillet" type="text" v-model="nbBillet" required/>
+    </div>
+    <div>
+      <label for="adresseMail">mail:</label><br>
+      <input id="adresseMail" type="email" v-model="adresseMail" required/>
+    </div>
+    <input hidden="concert" v-model="concert" required></input>
+    <button :class="[name ? activeClass : '']" type="submit">Submit</button>
+    <div>
+      <h3>Data retrieved from server:</h3>
+      <p v-if="success"> {{ success }}</p>
+      <pre>{{ response }}</pre>
+    </div>
+  </form>
+</main>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+        const Salles = {
+            data() {
+                return {
+                    siteWeb: "https://lab-sticc.univ-brest.fr/~ecariou/",
+                    concer: []
+                }
+            },
+            created()  {
+                fetch('http://localhost:8080/servlet/SalleServlet?operation=listeSalles')
+  				.then((response) => response.json())
+  				.then((json) => {this.salles = json})
+  				.then(console.log(this.salles));
+            },
+            computed: {
+                nbSalle() {
+                    return this.salles.length
+                }
+            }
+        }
+        new Vue({
+  el: '#app',
+  data() {
+    return {
+      userID: 1,
+      name: '',
+      email: '',
+      firstSon: '',
+      response: '',
+      success: '',
+      activeClass: 'active'
+    }
+  },
+  methods: {
+    submitForm() {
+      axios.post('//jsonplaceholder.typicode.com/posts', {
+        userID: this.userID,
+        name: this.name,
+        email: this.email,
+        firstSon: this.firstSon
+      }).then(response => {
+        // console.log(response);
+        // this.response = response.data
+        this.success = 'Data saved successfully';
+        this.response = JSON.stringify(response, null, 2)
+      }).catch(error => {
+        this.response = 'Error: ' + error.response.status
+      })
+      this.name = '';
+      this.email = '';
+      this.firstSon = '';
+    }
+  }
+})
+        const app = Vue.createApp(Salles).mount('#app')
+    </script>
+</body>
+</html>

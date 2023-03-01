@@ -1,11 +1,16 @@
 package com.dtos;
 
+import com.entities.TGestionnaireGst;
 import lombok.Data;
 
 @Data
 public class SalleDto {
 
-	private Long Id;
+	private long Id;
+
+	private Integer capacite;
 	private String nom;
-	private String capacite;
+	private String adresse;
+	private TGestionnaireGst gestionnaireId;
+
 }

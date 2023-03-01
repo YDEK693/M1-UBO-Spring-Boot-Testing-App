@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Acces salle avec Vue</title>
+ <!-- <link rel="stylesheet" href="css.css" type="text/css">-->
+</head>
+<body>
+<main id="app">
+  <h1>Acces aux salle de mysql avec Vue</h1>
+
+  <p>Il y a {{ nbSalle }} salle dans la base.</p>
+   <ul>
+           <li v-for="s in salles" :key="s.id">{{ s.nom }} situé au {{ s.adresse }} <a :href="'/planningSalle.html?id=' + s.id">planning {{s.id}}</a> </li>
+   </ul>
+
+  <p><br /></p>
+    <a href="planningSalle.html?id=1">planningSalle</a>
+</main>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+        const Salles = {
+            data() {
+                return {
+                    siteWeb: "https://lab-sticc.univ-brest.fr/~ecariou/",
+                    salles: []
+                }
+            },
+            created()  {
+                fetch('http://localhost:8080/servlet/SalleServlet?operation=listeSalles')
+  				.then((response) => response.json())
+  				.then((json) => {this.salles = json})
+  				.then(console.log(this.salles));
+            },
+            computed: {
+                nbSalle() {
+                    return this.salles.length
+                }
+            }
+        }
+        const app = Vue.createApp(Salles).mount('#app')
+    </script>
+</body>
+</html>

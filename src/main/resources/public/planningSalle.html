@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Planning salle</title>
+   <!-- <link rel="stylesheet" href="css.css" type="text/css">-->
+</head>
+<body>
+<main id="app">
+    <h3>{{ salle.nom }}</h3>
+    description : la salle {{ salle.nom }} est une salle avec une capacité de
+    {{ salle.capacite }} personnes, situé aux {{ salle.adresse }}.
+    <h4>Gestionnaire</h4>
+    <p v-if="salle.gestionnaireId.gstPers != null">
+        {{ salle.gestionnaireId.gstPers }}
+    </p>
+    <p v-else>
+        Contacter l'association {{ salle.gestionnaireId.gstAssocNom }} ou le président {{ salle.gestionnaireId.gstAssocPres }}
+    </p>
+
+    <h3>Planning</h3>
+    <ul>
+        <li v-for="s in salle.soirees" :key="s.Id">
+            {{ s.Nom }}<ul>
+                        <li v-for="c in s.concerts" :key="c.Id">
+                            {{ c.DateDebut }} - {{ c.DateFin }}
+                        </li>
+                        </ul>
+        </li>
+
+    </ul>
+    <h3>Article</h3>
+    <div v-for="a in articles" :key="a._id">
+        <p v-if="a.type === 'article'">
+            {{ a.information }}, rédigé par {{ a.auteur }}
+        </p>
+        <p v-else>
+            photo
+        </p>
+
+    </div>
+</main>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+        const Salle = {
+            data() {
+                return {
+                    salle:"",
+                    articles:[]
+                }
+            },
+            created()  {
+               let uri = window.location.search.substring(1);
+               let params = new URLSearchParams(uri);
+                fetch('http://localhost:8080/servlet/SalleServlet?operation=agendaSalle&salleId='+params.get('id'))
+  				.then((response)=> response.json())
+  				.then((json) => {this.salle = json})
+  				fetch('http://localhost:8080/servlet/InformationServlet?table=salle&id='+params.get('id'))
+                .then((response)=> response.json())
+  				.then((json) => {this.articles = json})
+            }
+        }
+        const app = Vue.createApp(Salle).mount('#app')
+    </script>
+</body>
+</html>
