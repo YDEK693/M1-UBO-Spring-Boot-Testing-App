@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<<<<<<< Updated upstream
     <title>Title</title>
 </head>
 <body>
@@ -9,23 +10,45 @@
   <form @submit.prevent="submitForm">
     <div>
       <label for="nbBillet">Nb billet:</label><br>
+=======
+    <title>acheter Billet</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" ></script>
+
+</head>
+<body>
+<main id="app">
+  <!--<form @submit.prevent="submitForm">-->
+  <form @submit.prevent="submitForm">
+    {{ concert.DateDebut }} - {{ concert.DateFin }}
+    <div>
+      <label for="nbBillet">Nb billet à acheter:</label><br>
+>>>>>>> Stashed changes
       <input id="nbBillet" type="text" v-model="nbBillet" required/>
     </div>
     <div>
       <label for="adresseMail">mail:</label><br>
       <input id="adresseMail" type="email" v-model="adresseMail" required/>
     </div>
+<<<<<<< Updated upstream
     <input hidden="concert" v-model="concert" required></input>
     <button :class="[name ? activeClass : '']" type="submit">Submit</button>
     <div>
       <h3>Data retrieved from server:</h3>
       <p v-if="success"> {{ success }}</p>
       <pre>{{ response }}</pre>
+=======
+   <!-- <input type="hidden" id="concertId" v-model="concertId" value = required/>-->
+    <button type="submit">Submit</button>
+    <div>
+      <h3>Data retrieved from server:</h3>
+      <p v-if="success"> Billet acheté et envoyé par email</p>
+>>>>>>> Stashed changes
     </div>
   </form>
 </main>
 <script src="https://unpkg.com/vue@next"></script>
 <script>
+<<<<<<< Updated upstream
         const Salles = {
             data() {
                 return {
@@ -80,6 +103,47 @@
   }
 })
         const app = Vue.createApp(Salles).mount('#app')
+=======
+        let uri = window.location.search.substring(1);
+        let params = new URLSearchParams(uri);
+        const Concert = {
+            data() {
+                return {
+                    concert: '',
+                    adresseMail: '',
+                    concertId:params.get('id'),
+                    nbBillet:'',
+                    response: '',
+                    success: '',
+                    activeClass: 'active',
+                }
+            },
+            methods: {
+              submitForm() {
+                axios.post('http://localhost:8080/servlet/BilletServlet', {
+                  operation: "acheterBillet",
+                  nbBillet: this.nbBillet,
+                  concertId: this.concertId
+                }).then(response => {
+                  this.success = 'Data saved successfully';
+                }).catch(error => {
+                  this.response = 'Error: ' + error.response.status
+                })
+                  this.nbBillet = '';
+                  this.concertId = '';
+              }
+            },
+            created()  {
+                let uri = window.location.search.substring(1);
+                let params = new URLSearchParams(uri);
+                fetch('http://localhost:8080/servlet/ConcertServlet?operation=getConcert&id='+params.get('id'))
+  				.then((response) => response.json())
+  				.then((json) => {this.concert = json})
+  				.then(console.log(this.concert));
+            }
+        }
+        const app = Vue.createApp(Concert).mount('#app')
+>>>>>>> Stashed changes
     </script>
 </body>
 </html>
