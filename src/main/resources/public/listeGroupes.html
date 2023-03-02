@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Groupes</title>
+    <!-- <link rel="stylesheet" href="css.css" type="text/css">-->
+</head>
+<body>
+<main id="app">
+    <h1>Groupes</h1>
+
+    <ul>
+        <li v-for="g in groupes" :key="g.Id">
+            {{ g.Nom }} <a :href="'/pageGroupe.html?id=' + g.id">informations</a> </li>
+            <ul>
+                <li v-for="a in g.artistes" :key="a.Id">
+                    {{ a.nom }} - {{ a.prenom }} ({{ a.pseudo }})
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <p><br /></p>
+    <a href="planningSalle.html?id=1">planningSalle</a>
+</main>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+        const Groupes = {
+            data() {
+                return {
+                    groupes: []
+                }
+            },
+            created()  {
+                fetch('http://localhost:8081/groupes/')
+  				.then((response) => response.json())
+  				.then((json) => {this.groupes = json})
+  				.then(console.log(this.groupes));
+            }
+        }
+        const app = Vue.createApp(Groupes).mount('#app')
+    </script>
+</body>
+</html>

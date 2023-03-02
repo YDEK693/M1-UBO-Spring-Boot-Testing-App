@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>{{ groupe.nom}}</title>
+  <!-- <link rel="stylesheet" href="css.css" type="text/css">-->
+</head>
+<body>
+<main id="app">
+  <h3>{{ groupe.nom }}</h3>
+
+
+  <h3>Membre : </h3>
+  <ul>
+    <li v-for="a in groupes.artistes" :key="a.Id">
+      {{ a.nom }} {{a.prenom }} ({{a.pseudo }})
+    </li>
+  </ul>
+
+  <h3>Article</h3>
+  <div v-for="a in articles" :key="a._id">
+    <p v-if="a.type === 'article'">
+      {{ a.information }}, rédigé par {{ a.auteur }}
+    </p>
+    <p v-else>
+      photo
+    </p>
+
+  </div>
+
+  <h3>Concert</h3>
+  <ul>
+    <li v-for="c in concerts" :key="c.Id">
+      {{ c.dateDebut }} {{c.dateFin }} <a href="'acheterBillet.html?id='+c.id">acheter billet</a>
+    </li>
+  </ul>
+
+</main>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+        const Salle = {
+            data() {
+                return {
+                    groupe:'',
+                    concerts:[]
+
+                }
+            },
+            created()  {
+               let uri = window.location.search.substring(1);
+               let params = new URLSearchParams(uri);
+                fetch('http://localhost:8081/groupes/'+params.get('id'))
+  				.then((response)=> response.json())
+  				.then((json) => {this.groupe = json})
+  				fetch('http://localhost:8080/servlet/concertServlet?operation=concertGroupe&id='+params.get('id'))
+                .then((response)=> response.json())
+  				.then((json) => {this.concerts = json})
+            }
+        }
+        const app = Vue.createApp(Salle).mount('#app')
+    </script>
+</body>
+</html>

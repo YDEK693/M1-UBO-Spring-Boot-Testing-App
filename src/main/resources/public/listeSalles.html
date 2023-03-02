@@ -2,14 +2,12 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Acces salle avec Vue</title>
+  <title>Salles</title>
  <!-- <link rel="stylesheet" href="css.css" type="text/css">-->
 </head>
 <body>
 <main id="app">
   <h1>Acces aux salle de mysql avec Vue</h1>
-
-  <p>Il y a {{ nbSalle }} salle dans la base.</p>
    <ul>
            <li v-for="s in salles" :key="s.id">{{ s.nom }} situé au {{ s.adresse }} <a :href="'/planningSalle.html?id=' + s.id">planning {{s.id}}</a> </li>
    </ul>
@@ -22,7 +20,6 @@
         const Salles = {
             data() {
                 return {
-                    siteWeb: "https://lab-sticc.univ-brest.fr/~ecariou/",
                     salles: []
                 }
             },
@@ -31,11 +28,6 @@
   				.then((response) => response.json())
   				.then((json) => {this.salles = json})
   				.then(console.log(this.salles));
-            },
-            computed: {
-                nbSalle() {
-                    return this.salles.length
-                }
             }
         }
         const app = Vue.createApp(Salles).mount('#app')
