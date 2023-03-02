@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
     <title>acheter Billet</title>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" ></script>
 
@@ -12,6 +13,7 @@
   <form @submit.prevent="submitForm">
     {{ concert.DateDebut }} - {{ concert.DateFin }}
     <div>
+
       <label for="nbBillet">Nb billet à acheter:</label><br>
       <input id="nbBillet" type="text" v-model="nbBillet" required/>
     </div>
@@ -19,19 +21,21 @@
       <label for="adresseMail">mail:</label><br>
       <input id="adresseMail" type="email" v-model="adresseMail" required/>
     </div>
+
    <!-- <input type="hidden" id="concertId" v-model="concertId" value = required/>-->
     <button type="submit">Submit</button>
     <div>
       <h3>Data retrieved from server:</h3>
       <p v-if="success"> Billet acheté et envoyé par email</p>
+
     </div>
   </form>
 </main>
 <script src="https://unpkg.com/vue@next"></script>
 <script>
-        let uri = window.location.search.substring(1);
-        let params = new URLSearchParams(uri);
-        const Concert = {
+
+        const Salles = {
+
             data() {
                 return {
                     concert: '',
@@ -68,6 +72,7 @@
             }
         }
         const app = Vue.createApp(Concert).mount('#app')
+
     </script>
 </body>
 </html>
